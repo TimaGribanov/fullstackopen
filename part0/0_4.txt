@@ -1,0 +1,14 @@
+actor user
+
+user->browser: Insert text "moi" to the form
+user->browser: Submit the form
+browser-->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note?note=moi
+server->browser: HTTP 302 Redirect to /notes
+
+note over browser:
+The new note is being
+put to the array
+and browser repeats
+the scenario for
+loading the page
+end note

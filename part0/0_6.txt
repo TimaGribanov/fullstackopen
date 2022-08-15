@@ -1,0 +1,21 @@
+actor user
+
+user->browser: Insert text "moimoi" to the form
+user->browser: Submit the form
+browser-->server: https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note right of browser:
+JSON Request body:
+{
+  "content":"moimoi",
+  "date":"2022-08-15T11:33:01.436Z"
+}
+end note
+server->browser: HTTP 201 Created
+note left of server:
+JSON Request body:
+{
+  "message":"note created"
+}
+end note
+
+browser-->browser: redrawNotes()
