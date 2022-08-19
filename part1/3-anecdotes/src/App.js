@@ -6,15 +6,10 @@ const Display = ({ anecdote, votes }) => {
       <p>{anecdote}</p>
       <p>This anecdote has {votes} votes</p>
     </div>
-    
   )
 }
 
-const Button = ({ handleClick, text }) => {
-  return (
-    <button onClick={handleClick}>{text}</button>
-  )
-}
+const Button = ({ handleClick, text }) => (<button onClick={handleClick}>{text}</button>)
 
 const App = () => {
   const anecdotes = [
@@ -31,9 +26,7 @@ const App = () => {
   const [votesState, setVoted] = useState(new Array(anecdotes.length).fill(0))
   const [mostVoted, setMostVoted] = useState(0)
 
-  const anecdoteHandle = () => {
-    setSelected(Math.floor(Math.random() * anecdotes.length))
-  }
+  const anecdoteHandle = () => setSelected(Math.floor(Math.random() * anecdotes.length))
 
   const voteHandle = () => {
     const copyArr = [...votesState]
