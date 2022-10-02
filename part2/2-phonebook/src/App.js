@@ -15,7 +15,6 @@ const App = () => {
       .then(response => {
         console.log('promise done')
         setPersons(response.data)
-        
       })
   }
 
