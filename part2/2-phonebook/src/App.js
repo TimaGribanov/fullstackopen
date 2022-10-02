@@ -6,7 +6,6 @@ import Filter from './components/Filter'
 
 const App = () => {
   const [persons, setPersons] = useState([])
-  const [personsId, setPersonsId] = useState(persons[persons.length - 1].id + 1)
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
 
@@ -16,6 +15,7 @@ const App = () => {
       .then(response => {
         console.log('promise done')
         setPersons(response.data)
+        
       })
   }
 
@@ -26,9 +26,8 @@ const App = () => {
     if (persons.find(e => e.name === newName) !== undefined) {
       alert(`Person ${newName} already exists!`)
     } else {
-      setPersonsId(personsId + 1)
       const newPerson = {
-        id: personsId,
+        id: persons[persons.length - 1].id + 1,
         name: newName,
         number: newNumber,
         visible: true
