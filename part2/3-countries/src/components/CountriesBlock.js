@@ -1,7 +1,7 @@
 import Country from "./Country"
 import CountryFull from "./CountryFull"
 
-const CountriesBlock = ({ countries }) => {
+const CountriesBlock = ({ countries, openFull, visibility }) => {
     if (countries.length > 10)
         return <div><p>Too many matches, specify another filter</p></div>
     
@@ -17,11 +17,24 @@ const CountriesBlock = ({ countries }) => {
     
     return (
         <div>
-            {countries.map(country =>
-                <Country
-                    key={country.id}      
-                    name={country.name.common}
-                />
+            {countries.map(country => {
+                let display = 'none'
+                visibility.forEach(v => {if (country.id === v.id && v.visible) display = 'block'})
+                return (
+                    <Country
+                key={country.id}
+                id={country.id}    
+                name={country.name.common}
+                capital={country.capital}
+                area={country.area}
+                languages={country.languages}
+                flag={country.flags.svg}
+                openFull={openFull}
+                visibility={{display}}
+            />
+            )
+                }
+                
             )}
         </div>
     )

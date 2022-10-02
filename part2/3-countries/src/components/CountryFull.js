@@ -1,6 +1,6 @@
 const CountryFull = (props) => {
     return (
-        <div>
+        <div style={props.visibility}>
             <h3>{props.name}</h3>
             <p>Capital: {props.capital}</p>
             <p>Area: {props.area} km<sup>2</sup></p>
