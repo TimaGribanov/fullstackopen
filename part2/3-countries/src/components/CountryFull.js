@@ -1,3 +1,5 @@
+import Weather from "./Weather"
+
 const CountryFull = (props) => {
     return (
         <div style={props.visibility}>
@@ -11,6 +13,7 @@ const CountryFull = (props) => {
                 )}
             </ul>
             <img src={props.flag} alt={props.name} width="100px" />
+            <Weather weather={props.weather} />
         </div>
     )
 }

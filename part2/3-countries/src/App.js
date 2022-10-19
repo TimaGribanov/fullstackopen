@@ -7,6 +7,7 @@ const App = () => {
   const [countries, setCountries] = useState([])
   const [showCountries, setShowCountries] = useState([])
   const [fullViewVisibile, setFullViewVisible] = useState([])
+  const [weather, setWeather] = useState([])
 
   const hook = () => {
     axios
@@ -21,10 +22,10 @@ const App = () => {
   }
 
   useEffect(hook, [])
-  
+
   const handleSearch = event => {
     let tempCountries = []
-    
+
     countries.forEach(c => {
       if (c.name.common.toLowerCase().includes(event.target.value) && event.target.value.length !== 0) {
         tempCountries.push(c)
@@ -39,16 +40,23 @@ const App = () => {
     }))
   }
 
+  const getWeather = capital => {
+    const apiKey = process.env.REACT_APP_API_KEY
+    axios
+      .get(`https://api.openweathermap.org/data/2.5/weather?q=${capital}&units=metric&appid=${apiKey}`)
+      .then(response => setWeather(response.data))
+  }
+
   const openFull = inputId => {
     const id = inputId
-    console.log(id)
+
     setFullViewVisible(fullViewVisibile.map(e => {
       if (e.id === id) {
         if (e.visible) return { ...e, visible: false }
-        
+
         return { ...e, visible: true }
       }
-      
+
       return { ...e, visible: false }
     }))
   }
@@ -56,7 +64,13 @@ const App = () => {
   return (
     <div>
       <Search handleSearch={handleSearch} />
-      <CountriesBlock countries={showCountries} openFull={openFull} visibility={fullViewVisibile} />
+      <CountriesBlock
+        countries={showCountries}
+        openFull={openFull}
+        getWeather={getWeather}
+        weather={weather}
+        visibility={fullViewVisibile}
+      />
     </div>
   );
 }
