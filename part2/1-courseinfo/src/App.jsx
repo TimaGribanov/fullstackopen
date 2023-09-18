@@ -1,25 +1,25 @@
 import Course from './components/Course'
 
 const App = () => {
-  const course = [
+  const courses = [
     {
-      name: 'Half Stack application development',
       id: 1,
+      name: 'Half Stack application development',
       parts: [
         {
+          id: 1,
           name: 'Fundamentals of React',
-          exercises: 10,
-          id: 1
+          exercises: 10
         },
         {
+          id: 2,
           name: 'Using props to pass data',
-          exercises: 7,
-          id: 2
+          exercises: 7
         },
         {
+          id: 3,
           name: 'State of a component',
-          exercises: 14,
-          id: 3
+          exercises: 14
         },
         {
           name: 'Redux',
@@ -27,7 +27,7 @@ const App = () => {
           id: 4
         }
       ]
-    }, 
+    },
     {
       name: 'Node.js',
       id: 2,
@@ -48,10 +48,10 @@ const App = () => {
 
   return (
     <div>
-      {course.map(c => <Course key={c.id} course={c} />)}
+      {courses.map(course => <Course course={course} />)}
     </div>
-    
+  
   )
 }
 
-export default App;
+export default App
