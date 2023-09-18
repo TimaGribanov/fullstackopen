@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
-const Display = ({ anecdote, votes }) => {
+const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>  
+
+const Display = ({ anecdote, vote }) => {
   return (
     <div>
       <p>{anecdote}</p>
-      <p>This anecdote has {votes} votes</p>
+      <p>This anecdote has {vote} votes</p>
     </div>
   )
 }
-
-const Button = ({ handleClick, text }) => (<button onClick={handleClick}>{text}</button>)
 
 const App = () => {
   const anecdotes = [
@@ -19,31 +19,38 @@ const App = () => {
     'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
-    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.'
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
   ]
-   
+
   const [selected, setSelected] = useState(0)
-  const [votesState, setVoted] = useState(new Array(anecdotes.length).fill(0))
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
   const [mostVoted, setMostVoted] = useState(0)
 
-  const anecdoteHandle = () => setSelected(Math.floor(Math.random() * anecdotes.length))
+  const nextAnecdote = () => {
+    let rnd = Math.floor(Math.random() * anecdotes.length)
+    while (rnd === selected) {
+      rnd = Math.floor(Math.random() * anecdotes.length)
+    }
+    setSelected(rnd)
+  }
 
   const voteHandle = () => {
-    const copyArr = [...votesState]
+    const copyArr = [...votes]
     copyArr[selected] += 1
-    setVoted(copyArr)
+    setVotes(copyArr)
     setMostVoted(copyArr.indexOf(Math.max(...copyArr)))
   }
 
   return (
     <div>
       <h1>Anecdote of the day</h1>
-      <Display anecdote={anecdotes[selected]} votes={votesState[selected]} />
-      <Button handleClick={anecdoteHandle} text='new anecdote' />
+      <Display anecdote={anecdotes[selected]} vote={votes[selected]} />
+      <Button handleClick={nextAnecdote} text='new anecdote' />
       <Button handleClick={voteHandle} text='vote' />
-      <hr />
-      <h1>Anecdote with most votes</h1>
-      <Display anecdote={anecdotes[mostVoted]} votes={votesState[mostVoted]} />
+      <hr/>
+      <h1>Anecdote with the most votes</h1>
+      <Display anecdote={anecdotes[mostVoted]} vote={votes[mostVoted]} />
     </div>
   )
 }
