@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react'
 import Person from './components/Person'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
+import Message from './components/Message'
+import Error from './components/Error'
 import api from './api.js'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
 
   const hook = () => {
     api
@@ -40,7 +44,14 @@ const App = () => {
         visible: true
       }
       setPersons(persons.concat(newPerson))
-      api.add(newPerson).then(response => console.log(response))
+      api
+        .add(newPerson)
+        .then(() => {
+          setMessage(`Added ${newName}`)
+          setTimeout(() => {
+            setMessage('')
+          }, 5000)
+        })
     }
   }
 
@@ -62,17 +73,25 @@ const App = () => {
   }
 
   const handleDelete = (id, name) => {
-    console.log(id, name)
     if (window.confirm(`Delete ${name}?`)) {
       api
         .remove(id)
         .then(res => hook())
+        .catch(e => {
+          setError(`Information of ${name} has already been removed from server`)
+          setTimeout(() => {
+            setError('')
+          }, 5000)
+          hook()
+        })
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Error error={error} />
+      <Message message={message} />
       <Filter handleSearch={handleSearch} />
       <h2>Add new number</h2>
       <PersonForm
