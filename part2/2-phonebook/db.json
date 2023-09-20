@@ -1,0 +1,28 @@
+{
+  "persons": [
+    {
+      "name": "Arto Hellas",
+      "number": "39-44-5323523",
+      "id": 0,
+      "visible": true
+    },
+    {
+      "name": "Ada Lovelace",
+      "number": "39-44-5323523",
+      "id": 1,
+      "visible": true
+    },
+    {
+      "name": "Dan Abramov",
+      "number": "12-43-234345",
+      "id": 2,
+      "visible": true
+    },
+    {
+      "name": "Mary Poppendieck",
+      "number": "39-23-6423122",
+      "id": 3,
+      "visible": true
+    }
+  ]
+}
