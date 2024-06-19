@@ -1,0 +1,57 @@
+GET http://localhost:3003/api/blogs
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "name": "First",
+    "title": "Test Test",
+    "url": "/test.html",
+    "upvotes": 4
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "name": "Blog with user",
+    "title": "Test Test",
+    "url": "/test_user.html",
+    "upvotes": 4,
+    "userId": "65200de414f797436da58e3f"
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlcjIiLCJpZCI6IjY1MjAwZGU0MTRmNzk3NDM2ZGE1OGUzZiIsImlhdCI6MTY5NjYwMTU0MiwiZXhwIjoxNjk2NjA1MTQyfQ._-hx2ZA7YIfkzzYqDXqyGHxpmqTkjB-V5ZwDGP5GDW0
+
+{
+  "name": "User with token",
+  "title": "Blog with token",
+  "url": "/test_token.html",
+  "upvotes": 10
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlcjIiLCJpZCI6IjY1MjAwZGU0MTRmNzk3NDM2ZGE1OGUzZiIsImlhdCI6MTY5NjYwNTczMCwiZXhwIjoxNjk2NjA5MzMwfQ.PD_DJcqCK_l0-MbLpI1abN_jMtHzVMUXwhhYnZW5QvM
+
+{
+  "name": "User with token",
+  "title": "Blog with token 2",
+  "url": "/test_token_2.html",
+  "upvotes": 10
+}
+
+###
+DELETE http://localhost:3003/api/blogs/652026375108196d4400f521
+Content-Type: application/json
+
+###
+DELETE http://localhost:3003/api/blogs/652026375108196d4400f521
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlcjIiLCJpZCI6IjY1MjAwZGU0MTRmNzk3NDM2ZGE1OGUzZiIsImlhdCI6MTY5NjYwNTczMCwiZXhwIjoxNjk2NjA5MzMwfQ.PD_DJcqCK_l0-MbLpI1abN_jMtHzVMUXwhhYnZW5QvM
