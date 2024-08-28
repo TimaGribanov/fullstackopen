@@ -54,6 +54,19 @@ blogRouter.put('/:id', async (request, response) => {
   response.status(204).json(updatedBlog)
 })
 
+blogRouter.post('/:id/comments', async (request, response) => {
+  const id = request.params.id
+  const comments = request.body.comments
+
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    id,
+    { comments },
+    { new: true, runValidators: true, context: 'query' }
+  )
+
+  response.status(204).json(updatedBlog)
+})
+
 blogRouter.delete('/:id', middleware.tokenExtractor, middleware.userExtractor, async (request, response, next) => {
   const id = request.params.id
   const user = request.user

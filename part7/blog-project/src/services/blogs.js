@@ -67,4 +67,20 @@ const deleteBlog = async (id, token) => {
   }
 }
 
-export default { getAll, get, newBlog, editBlog, deleteBlog, likeBlog }
+const addComment = async (id, text) => {
+  const current = await get(id)
+
+  const body = {
+    comments: [...current[0].comments, {text: text}]
+  }
+
+  console.log(body)
+
+  try {
+    return await axios.post(`${baseUrl}/${id}/comments`, body)
+  } catch (error) {
+    return error
+  }
+} 
+
+export default { getAll, get, newBlog, editBlog, deleteBlog, likeBlog, addComment }
