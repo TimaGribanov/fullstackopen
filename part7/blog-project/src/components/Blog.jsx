@@ -1,10 +1,17 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Togglable from './Togglable'
+import { useParams } from 'react-router-dom'
 import { deleteTheBlog, likeTheBlog } from '../reducers/blogReducer'
 import { notificationVoted } from '../reducers/notificationReducer'
 
-const Blog = ({blog}) => {
+import CurrentUser from './CurrentUser'
+
+const Blog = () => {
+  const id = useParams().id
+  const blog = useSelector(state => {
+    return state.blogs.find(b => b.id === id)
+  })
+
   const user = useSelector(state => {
     return state.user
   })
@@ -20,14 +27,6 @@ const Blog = ({blog}) => {
     dispatch(deleteTheBlog(blog.id, user.token))
   }
 
-  const [visible, setVisible] = useState(false)
-
-  const handleVisibilityRef = useRef()
-
-  const handleVisibilityClick = () => {
-    handleVisibilityRef.current.toggleVisibility()
-  }
-
   const deleteBtn = () => (
     <p>
       <button onClick={deleteBlog}>remove</button>
@@ -35,15 +34,14 @@ const Blog = ({blog}) => {
   )
 
   return (
-    <div className='blogBlock'>
-      <div>
-        {blog.title} {blog.author}
-      </div>
-      <Togglable
-        class='infoBlock'
-        btnLabel={visible ? 'hide': 'view'}
-        ref={handleVisibilityRef}
-      >
+    !!blog && (
+      <>
+        <h1>blogs</h1>
+
+        <CurrentUser />
+
+        <h1>{blog.title} {blog.author}</h1>
+
         <p>{blog.url}</p>
         <p>
           likes {blog.upvotes}{' '}
@@ -51,11 +49,10 @@ const Blog = ({blog}) => {
             like
           </button>
         </p>
-        <p>{blog.user.name}</p>
+        <p>added by {blog.user.name}</p>
         {user.username === blog.user.username && deleteBtn()}
-      </Togglable>
-    </div>
-  )
+      </>
+    ))
 }
 
 export default Blog

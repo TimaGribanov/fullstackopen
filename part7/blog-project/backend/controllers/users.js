@@ -7,6 +7,16 @@ usersRouter.get('/', async (request, response) => {
   response.json(users)
 })
 
+usersRouter.get('/:id', async (request, response) => {
+  const id = request.params.id
+
+  const foundUser = await User
+    .findById(id).find({})
+    .populate('blogs')
+
+  response.json(foundUser)
+})
+
 usersRouter.post('/', async (request, response, next) => {
   const { username, name, password } = request.body
 

@@ -1,11 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteUser } from '../reducers/userReducer'
+import { Link } from 'react-router-dom'
 
 const CurrentUser = () => {
-  const user = useSelector(state => {
-    return state.user
-  })
-
   const dispatch = useDispatch()
 
   const logout = () => {
@@ -15,7 +12,10 @@ const CurrentUser = () => {
 
   return (
     <div>
-      <p>{user.name} logged in</p>
+      <Link to='/users'>users</Link>
+      <span> </span>
+      <Link to ='/'>blogs</Link>
+      <span> {JSON.parse(window.localStorage.getItem('loggedBlogsUser')).name} logged in </span>
       <button onClick={logout}>logout</button>
     </div>
   )

@@ -26,7 +26,6 @@ const newBlog = async (body, token) => {
 
 const likeBlog = async (id, token) => {
   const current = await get(id)
-  console.log(current)
   const body = {
     ...current,
     upvotes: current[0].upvotes + 1

@@ -1,7 +1,7 @@
 import { useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
-import Blog from './Blog'
 import BlogsForm from './BlogsForm'
 import Togglable from './Togglable'
 
@@ -9,8 +9,6 @@ const BlogList = () => {
   const blogs = useSelector(state => {
     return state.blogs
   })
-
-  const dispatch = useDispatch()
 
   const blogsFormRef = useRef();
 
@@ -20,13 +18,14 @@ const BlogList = () => {
       <Togglable class='newBlockBlog' btnLabel='new blog' ref={blogsFormRef}>
         <BlogsForm />
       </Togglable>
-      {blogs
-        .map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-          />
-        ))}
+      <table>
+        <tbody>
+          {blogs.map(blog =>
+            <tr key={blog.id}>
+              <td><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></td>
+            </tr>)}
+        </tbody>
+      </table>
     </div>
   )
 }
