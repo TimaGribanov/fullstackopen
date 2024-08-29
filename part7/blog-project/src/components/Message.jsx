@@ -1,3 +1,4 @@
+import { Alert } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
 const Message = () => {
@@ -18,8 +19,13 @@ const Message = () => {
     return ''
   })
 
-  if (message === "") return null
-  return <div className="info">{message}</div>
+  return <div className='container'>
+    {(message &&
+      <Alert variant='success'>
+        {message}
+      </Alert>
+    )}
+  </div>
 }
 
 export default Message

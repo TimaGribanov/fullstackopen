@@ -5,6 +5,9 @@ import { addCommentToBlog, deleteTheBlog, likeTheBlog } from '../reducers/blogRe
 import { notificationVoted } from '../reducers/notificationReducer'
 
 import CurrentUser from './CurrentUser'
+import Error from './Error'
+import Message from './Message'
+import { Button, Form } from 'react-bootstrap'
 
 const Blog = () => {
   const [newComment, setNewComment] = useState('')
@@ -31,7 +34,7 @@ const Blog = () => {
 
   const deleteBtn = () => (
     <p>
-      <button onClick={deleteBlog}>remove</button>
+      <Button variant='dark' onClick={deleteBlog}>remove</Button>
     </p>
   )
 
@@ -44,6 +47,9 @@ const Blog = () => {
   return (
     !!blog && (
       <>
+        <Error />
+        <Message />
+
         <h1>blogs</h1>
 
         <CurrentUser />
@@ -53,26 +59,28 @@ const Blog = () => {
         <p>{blog.url}</p>
         <p>
           likes {blog.upvotes}{' '}
-          <button className='likeBtn' onClick={like}>
+          <Button className='likeBtn' onClick={like}>
             like
-          </button>
+          </Button>
         </p>
-        <p>added by {blog.user.name}</p>
+        <p><em>added by {blog.user.name}</em></p>
 
         <div>
           <h3>comments</h3>
-          <form onSubmit={addComment}>
-            <div>
-              <input
+          <Form onSubmit={addComment}>
+            <Form.Group>
+              <Form.Label>Comment:</Form.Label>
+              <Form.Control
                 id='commentText'
                 type='text'
                 value={newComment}
                 name='Comment'
                 placeholder='Leave your thoughts'
-                onChange={({ target }) => setNewComment(target.value)} />
-              <button id='commentBtn' type='submit'>add</button>
-            </div>
-          </form>
+                onChange={({ target }) => setNewComment(target.value)}
+              />
+            </Form.Group>
+            <Button id='commentBtn' type='submit'>add</Button>
+          </Form>
           <ul>
             {blog.comments.map(c => <li key={c._id}>{c.text}</li>)}
           </ul>

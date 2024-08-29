@@ -1,5 +1,6 @@
 import { useState, forwardRef, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
+import { Button } from "react-bootstrap";
 
 // eslint-disable-next-line react/display-name
 const Togglable = forwardRef((props, refs) => {
@@ -18,30 +19,15 @@ const Togglable = forwardRef((props, refs) => {
     };
   });
 
-  const whenVisible = () => (
-    <div style={showWhenVisible}>
-      {props.children}
-      <button onClick={toggleVisibility}>close</button>
-    </div>
-  );
-
-  const whenNotVisible = () => (
-    <div style={hideWhenVisible}>
-      <button onClick={toggleVisibility}>{props.btnLabel}</button>
-    </div>
-  );
-
   return (
     <div>
       <div className={props.class} style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>close</button>
+        <Button variant='warning' onClick={toggleVisibility}>close</Button>
       </div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.btnLabel}</button>
+        <Button variant='primary' onClick={toggleVisibility}>{props.btnLabel}</Button>
       </div>
-      {/* {visible === true && whenVisible()}
-      {visible === false && whenNotVisible()} */}
     </div>
   );
 });

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import loginService from '../services/login'
 import { setUser } from '../reducers/userReducer'
 import { useState } from 'react'
+import { Button, Form } from 'react-bootstrap'
 
 const LoginForm = () => {
   const [username, setUsername] = useState('')
@@ -23,30 +24,32 @@ const LoginForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <h2>log in to applications</h2>
-      <div>
-        username
-        <input
-          id='username'
-          type='text'
-          name='Username'
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          id='password'
-          type='password'
-          name='Password'
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button id='login-button' type='submit'>
-        login
-      </button>
-    </form>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label>username:</Form.Label>
+          <Form.Control
+            id='username'
+            type='text'
+            name='Username'
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>password:</Form.Label>
+          <Form.Control
+            id='password'
+            type='password'
+            name='Password'
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </Form.Group>
+        <Button variant='primary' id='login-button' type='submit'>
+          login
+        </Button>
+      </Form>
+    </div>
   )
 }
 

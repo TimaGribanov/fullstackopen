@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initialiseBlogs } from '../reducers/blogReducer'
+import { Button } from 'react-bootstrap'
 
 import Message from './Message'
 import Error from './Error'
@@ -26,13 +27,13 @@ const MainPage = () => {
     const showWhenVisible = { display: loginVisible ? '' : 'none' }
 
     return (
-      <div>
+      <div className='container'>
         <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
+          <Button variant='primary' onClick={() => setLoginVisible(true)}>log in</Button>
         </div>
         <div style={showWhenVisible}>
           <LoginForm />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
+          <Button variant='danger' onClick={() => setLoginVisible(false)}>cancel</Button>
         </div>
       </div>
     )

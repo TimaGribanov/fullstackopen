@@ -1,3 +1,4 @@
+import { Alert } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
 const Error = () => {
@@ -12,8 +13,13 @@ const Error = () => {
     return ''
   })
 
-  if (error === '') return null
-  return <div className='err'>{error}</div>
+  return <div className='container'>
+    {(error &&
+      <Alert variant='danger'>
+        {error}
+      </Alert>
+    )}
+  </div>
 }
 
 export default Error

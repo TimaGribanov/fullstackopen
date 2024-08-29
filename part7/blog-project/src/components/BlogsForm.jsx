@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTheBlog } from '../reducers/blogReducer'
+import { Form, Button } from 'react-bootstrap';
 
 const BlogsForm = () => {
   const [blogTitle, setBlogTitle] = useState('')
@@ -27,10 +28,10 @@ const BlogsForm = () => {
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={newBlog}>
-        <div>
-          title:
-          <input
+      <Form onSubmit={newBlog}>
+        <Form.Group>
+          <Form.Label>title:</Form.Label>
+          <Form.Control
             id="blogTitle"
             type="text"
             value={blogTitle}
@@ -38,10 +39,10 @@ const BlogsForm = () => {
             placeholder="Enter the title"
             onChange={({ target }) => setBlogTitle(target.value)}
           />
-        </div>
-        <div>
-          author:
-          <input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>author:</Form.Label>
+          <Form.Control
             id="blogAuthor"
             type="text"
             value={blogAuthor}
@@ -49,10 +50,10 @@ const BlogsForm = () => {
             placeholder="Enter the author name"
             onChange={({ target }) => setBlogAuthor(target.value)}
           />
-        </div>
-        <div>
-          url:
-          <input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>url:</Form.Label>
+          <Form.Control
             id="blogUrl"
             type="text"
             value={blogUrl}
@@ -60,13 +61,13 @@ const BlogsForm = () => {
             placeholder="Enter the URL"
             onChange={({ target }) => setBlogUrl(target.value)}
           />
-        </div>
-        <button id="createBlogBtn" type="submit">
+        </Form.Group>
+        <Button id="createBlogBtn" type="submit">
           add
-        </button>
-      </form>
+        </Button>
+      </Form>
     </div>
-  );
-};
+  )
+}
 
-export default BlogsForm;
+export default BlogsForm

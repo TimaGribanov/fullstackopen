@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
 import BlogsForm from './BlogsForm'
 import Togglable from './Togglable'
@@ -18,14 +19,14 @@ const BlogList = () => {
       <Togglable class='newBlockBlog' btnLabel='new blog' ref={blogsFormRef}>
         <BlogsForm />
       </Togglable>
-      <table>
+      <Table striped>
         <tbody>
           {blogs.map(blog =>
             <tr key={blog.id}>
               <td><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></td>
             </tr>)}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }
