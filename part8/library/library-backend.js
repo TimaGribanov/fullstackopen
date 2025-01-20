@@ -33,6 +33,7 @@ const typeDefs = `
     type User {
         username: String!
         id: ID!
+        favourite: String
     }
     
     type Token {
@@ -60,6 +61,7 @@ const typeDefs = `
         ): Author
         createUser(
             username: String!
+            favourite: String
         ): User
         login(
             username: String!
@@ -81,8 +83,10 @@ const resolvers = {
           return Book.find({author: authorObj, genres: args.genre})
         return Book.find({author: authorObj})
       }
-      if (args.genre)
+      if (args.genre) {
+        if (args.genre === '') return Book.find({})
         return Book.find({genres: args.genre})
+      }
       return Book.find({})
     },
     me: (root, args, context) => context.currentUser
