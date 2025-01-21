@@ -3,15 +3,44 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
-import {useApolloClient, useQuery} from '@apollo/client'
-import {ALL_AUTHORS, ALL_BOOKS} from './queries.js'
+import {useApolloClient, useQuery, useSubscription} from '@apollo/client'
+import {ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED} from './queries.js'
 import Recommend from './components/Recommend.jsx'
+
+export const updateCache = (cache, query, addedBook) => {
+  const uniqByTitle = a => {
+    let seen = new Set()
+    return a.filter((item) => {
+      let k = item.title
+      return seen.has(k) ? false : seen.add(k)
+    })
+  }
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqByTitle(allBooks.concat(addedBook))
+    }
+  })
+}
 
 const App = () => {
   const [token, setToken] = useState(null)
   const [page, setPage] = useState('authors')
   const result = useQuery(page === 'authors' ? ALL_AUTHORS : ALL_BOOKS)
   const client = useApolloClient()
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data, client }) => {
+      const addedBook = data.data.bookAdded
+      window.alert(`The book '${addedBook.title}' was added`)
+      client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+        return {
+          allBooks: allBooks.concat(addedBook)
+        }
+      })
+      // updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
+    }
+  })
 
   const logout = async () => {
     setToken(null)

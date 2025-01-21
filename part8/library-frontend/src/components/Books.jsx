@@ -12,13 +12,20 @@ const Books = (props) => {
     variables: { genre }
   })
 
+  console.log('props')
+  console.log(props.books)
+  console.log('local')
+  console.log(localBooks)
+  console.log()
+
   useEffect(() => {
     let genres = []
 
-    localBooks.map(book => book.genres.map(genre => genres.push(genre)))
+    props.books.map(book => book.genres.map(genre => genres.push(genre)))
 
     setAllGenres([...new Set(genres.sort())])
-  }, [])
+    setLocalBooks(props.books)
+  }, [props.books])
 
   useEffect(() => {
     if (result.data) {

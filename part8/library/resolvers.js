@@ -1,81 +1,23 @@
-const {ApolloServer} = require('@apollo/server')
-const {startStandaloneServer} = require('@apollo/server/standalone')
-const mongoose = require('mongoose')
-const {GraphQLError} = require('graphql')
-const jwt = require('jsonwebtoken')
-mongoose.set('strictQuery', false)
 const Author = require('./models/person')
 const Book = require('./models/book')
+const {GraphQLError} = require('graphql/index')
 const User = require('./models/user')
-require('dotenv').config()
-
-const MONGODB_URI = process.env.MONGODB_URI
-
-mongoose.connect(MONGODB_URI)
-  .then(() => console.log('connected to MongoDB'))
-  .catch(error => console.log('error connecting ot MongoDB: ', error.message))
-
-const typeDefs = `
-    type Author {
-        name: String!
-        bookCount: Int!
-        born: Int
-    }
-    
-    type Book {
-        title: String!
-        published: Int!
-        author: Author
-        id: ID!
-        genres: [String!]!
-    }
-    
-    type User {
-        username: String!
-        id: ID!
-        favourite: String
-    }
-    
-    type Token {
-        value: String!
-    }
-    type Query {
-        authorCount: Int!
-        bookCount: Int!
-        allBooks(author: String, genre: String): [Book!]!
-        allAuthors: [Author!]!
-        findAuthor: Author!
-        me: User
-    }
-    
-    type Mutation {
-        addBook(
-            title: String!
-            author: String!
-            published: Int
-            genres: [String]
-        ): Book
-        editAuthor(
-            name: String!
-            setBornTo: Int!
-        ): Author
-        createUser(
-            username: String!
-            favourite: String
-        ): User
-        login(
-            username: String!
-            password: String!
-        ): Token
-    }
-`
+const jwt = require('jsonwebtoken')
+const { PubSub } = require('graphql-subscriptions')
+const pubsub = new PubSub()
 
 const resolvers = {
   Query: {
     authorCount: async () => await Author.collection.countDocuments(),
-    allAuthors: async (root, args) => await Author.find({}),
+    allAuthors: async () => await Author.aggregate([{
+      $lookup: {
+        from: 'books',
+        localField: '_id',
+        foreignField: 'author',
+        as: 'books'
+      }
+    }]),
     findAuthor: async (root, args) => await Author.findOne({name: args.name}),
-    bookCount: () => Book.collection.countDocuments(),
     allBooks: async (root, args) => {
       if (args.author) {
         const authorObj = await Author.findOne({name: args.author})
@@ -92,8 +34,7 @@ const resolvers = {
     me: (root, args, context) => context.currentUser
   },
   Author: {
-    name: (root) => root.name,
-    bookCount: async (root) => await Book.find({author: root._id}).countDocuments()
+    name: (root) => root.name
   },
   Book: {
     title: (root) => root.title,
@@ -136,6 +77,9 @@ const resolvers = {
           }
         })
       }
+
+      await pubsub.publish('BOOK_ADDED', {bookAdded: book})
+
       return book
     },
     editAuthor: async (root, args, context) => {
@@ -190,24 +134,12 @@ const resolvers = {
       }
       return {value: jwt.sign(userForToken, process.env.JWT_SECRET)}
     }
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterableIterator('BOOK_ADDED')
+    }
   }
 }
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-})
-
-startStandaloneServer(server, {
-  listen: {port: 4000},
-  context: async ({req, res}) => {
-    const auth = req ? req.headers.authorization : null
-    if (auth && auth.startsWith('Bearer ')) {
-      const decodedToken = jwt.verify(auth.substring(7), process.env.JWT_SECRET)
-      const currentUser = await User.findById(decodedToken.id)
-      return {currentUser}
-    }
-  }
-}).then(({url}) => {
-  console.log(`Server ready at ${url}`)
-})
+module.exports = resolvers
