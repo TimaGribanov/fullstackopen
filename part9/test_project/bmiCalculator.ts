@@ -1,4 +1,4 @@
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
     const bmi: number = 10000 * weight / (height * height);
 
     let result: string;
@@ -13,16 +13,17 @@ const calculateBmi = (height: number, weight: number): string => {
         result = 'Obese';
 
     return result;
-}
+};
 
 const useCliInput = (input: Array<string>): string => {
-    let values: number[] = [];
+    const values: number[] = [];
 
     for (let i = 2; i < input.length; i++) {
         values.push(parseFloat(input[i]));
     }
 
     return calculateBmi(values[0], values[1]);
-}
+};
 
-console.log(useCliInput(process.argv));
+if (require.main === module)
+    console.log(useCliInput(process.argv));

@@ -10,10 +10,10 @@ interface Result {
 
 const printResult = (res: Result) => {
     console.log(res);
-}
+};
 
-const calculateExercises = (hoursPerDay: Array<number>): void => {
-    const target = hoursPerDay.shift();
+export const calculateExercises = (hoursPerDay: Array<number>): Result => {
+    const target = <number>hoursPerDay.shift();
 
     const periodLength = hoursPerDay.length;
     const trainingDays = hoursPerDay.filter(h => h.valueOf() > 0).length;
@@ -23,13 +23,21 @@ const calculateExercises = (hoursPerDay: Array<number>): void => {
             success = false;
         }
     });
-    const rating = success ? 3 : trainingDays === 0 ? 1 : 2;
-    const ratingDescription = rating === 1 ? 'You haven\'t exercised at all' : rating === 2 ? 'Could\'ve been better' : 'Well done!';
+    const rating = success
+        ? 3
+        : trainingDays === 0
+            ? 1
+            : 2;
+    const ratingDescription = rating === 1
+        ? 'You haven\'t exercised at all'
+        : rating === 2
+            ? 'Could\'ve been better'
+            : 'Well done!';
     let totalHours = 0;
     hoursPerDay.forEach(h => totalHours += h);
     const average = totalHours / periodLength;
 
-    printResult({
+    return({
         periodLength: periodLength,
         trainingDays: trainingDays,
         success: success,
@@ -38,12 +46,12 @@ const calculateExercises = (hoursPerDay: Array<number>): void => {
         target: target,
         average: average
     });
-}
+};
 
 const convertCliInput = (input: Array<string>): Array<number> => {
-    let retVal: number[] = [];
+    const retVal: number[] = [];
 
-    console.log(input)
+    console.log(input);
 
     for (let i = 2; i < input.length; i++) {
         retVal.push(parseFloat(input[i]));
@@ -52,6 +60,7 @@ const convertCliInput = (input: Array<string>): Array<number> => {
     console.log(retVal);
 
     return retVal;
-}
+};
 
-calculateExercises(convertCliInput(process.argv));
+if (require.main === module)
+    printResult(calculateExercises(convertCliInput(process.argv)));
