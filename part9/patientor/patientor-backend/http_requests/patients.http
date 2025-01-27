@@ -5,3 +5,29 @@ GET http://localhost:3001/api/ping
 ### GET request to get all patients
 GET http://localhost:3001/api/patients
 ###
+
+### POST request to add a new patient
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "Test Patient",
+  "dateOfBirth": "1997-05-22",
+  "gender": "male",
+  "ssn": "000215-115X",
+  "occupation": "Winx Fairy"
+}
+###
+
+### POST request to try to add a wrong patient
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "5555",
+  "dateOfBirth": "1997-05-22",
+  "gender": "whale",
+  "ssn": "000215-115X",
+  "occupation": "Winx Fairy"
+}
+###
