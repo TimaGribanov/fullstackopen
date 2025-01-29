@@ -6,6 +6,10 @@ GET http://localhost:3001/api/ping
 GET http://localhost:3001/api/patients
 ###
 
+### GET request to get a single patient
+GET http://localhost:3001/api/patients/d27736ec-f723-11e9-8f0b-362b9e155667
+###
+
 ### POST request to add a new patient
 POST http://localhost:3001/api/patients
 Content-Type: application/json

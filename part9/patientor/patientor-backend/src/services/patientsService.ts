@@ -12,8 +12,17 @@ const getPrivatePatients = (): NonSensitivePatient[] => {
     }));
 };
 
-const getPrivatePatientById = (id: string): NonSensitivePatient => {
+const getPatientById = (id: string): Patient => {
     const foundPatient: Patient | undefined = patientsData.find(p => p.id === id);
+
+    if (foundPatient === undefined)
+        throw Error('No patient found with the ID provided!');
+
+    return foundPatient;
+};
+
+const getPrivatePatientById = (id: string): NonSensitivePatient => {
+    const foundPatient: Patient = getPatientById(id);
 
     if (foundPatient === undefined)
         throw Error('No patient found with the ID provided!');
@@ -43,5 +52,7 @@ const addPatient = (entry: NewPatient): NonSensitivePatient => {
 export default {
     getPatients,
     getPrivatePatients,
-    addPatient
+    addPatient,
+    getPrivatePatientById,
+    getPatientById
 };

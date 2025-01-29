@@ -7,11 +7,16 @@ export interface Diagnosis {
     latin?: string
 }
 
-export interface Patient extends NewPatient {
-    id: string
+export interface Entry {
+
 }
 
-export type NonSensitivePatient = Omit<Patient, 'ssn'>;
+export interface Patient extends NewPatient {
+    id: string;
+    entries: Entry[]
+}
+
+export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
 
 export type NewPatient = z.infer<typeof NewPatientSchema>;
 
