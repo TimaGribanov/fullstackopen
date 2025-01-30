@@ -15,7 +15,7 @@ POST http://localhost:3001/api/patients
 Content-Type: application/json
 
 {
-  "name": "Test Patient",
+  "name": "Test PatientPage",
   "dateOfBirth": "1997-05-22",
   "gender": "male",
   "ssn": "000215-115X",
