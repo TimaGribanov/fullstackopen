@@ -1,15 +1,23 @@
 import {Entry} from '../types';
-import DiagnosisBlock from './DiagnosisBlock';
+import HospitalEntryBlock from './HospitalEntryBlock';
+import HealthCheckEntryBlock from './HealthCheckEntryBlock';
+import OccupationalHealthcareEntryBlock from './OccupationalHealthcareEntryBlock';
+
+const assertNever = (value: never): never => {
+    throw new Error(`Unhandled discriminated union member: ${JSON.stringify(value)}`);
+};
 
 const EntryBlock = ({entry}:{entry: Entry}) => {
-    console.log(entry.date);
-    return (
-        <div>
-            {entry.date} <em>{entry.description}</em>
-            {entry.diagnosisCodes !== undefined &&
-              <ul>{entry.diagnosisCodes.map((code: string) => <DiagnosisBlock key={code} code={code} />)}</ul>}
-        </div>
-    );
+    switch (entry.type) {
+        case "Hospital":
+            return <HospitalEntryBlock entry={entry} />;
+        case "HealthCheck":
+            return <HealthCheckEntryBlock entry={entry} />;
+        case "OccupationalHealthcare":
+            return <OccupationalHealthcareEntryBlock entry={entry} />;
+        default:
+            return assertNever(entry);
+    }
 };
 
 export default EntryBlock;

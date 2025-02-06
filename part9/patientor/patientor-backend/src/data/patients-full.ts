@@ -66,6 +66,19 @@ const patients: Patient[] = [
         occupation: 'Forensic Pathologist',
         entries: [
             {
+                id: 'd811e46d-70b3-4d90-b090-4535c7cf8fb1',
+                date: '2015-01-02',
+                type: 'Hospital',
+                specialist: 'MD House',
+                diagnosisCodes: ['S62.5'],
+                description:
+                    "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
+                discharge: {
+                    date: '2015-01-16',
+                    criteria: 'Thumb has healed.',
+                },
+            },
+            {
                 id: 'b4f4eca1-2aa7-4b13-9a18-4a5535c3c8da',
                 date: '2019-10-20',
                 specialist: 'MD House',
