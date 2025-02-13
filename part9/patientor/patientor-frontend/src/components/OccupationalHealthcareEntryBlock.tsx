@@ -1,7 +1,6 @@
 import {OccupationalHealthcareEntry} from '../types';
 import WorkIcon from '@mui/icons-material/Work';
 import DiagnosisBlock from './DiagnosisBlock';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const OccupationalHealthcareEntryBlock = ({entry}: {entry: OccupationalHealthcareEntry}) => {
     return (

@@ -35,3 +35,17 @@ Content-Type: application/json
   "occupation": "Winx Fairy"
 }
 ###
+
+### POST request to add a new entry to a patient
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+  "date": "2019-1-20",
+  "specialist": "MD House",
+  "type": "HealthCheck",
+  "description": "Yearly control visit. Cholesterol levels back to normal.",
+  "healthCheckRating": 2,
+  "diagnosisCodes": ["S62.5"]
+}
+###

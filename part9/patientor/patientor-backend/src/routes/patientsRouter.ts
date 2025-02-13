@@ -1,7 +1,7 @@
 import express, {NextFunction, Request, Response} from 'express';
 import patientsService from '../services/patientsService';
-import {NewPatient, NonSensitivePatient} from '../types';
-import {NewPatientSchema} from '../utils';
+import {NewEntry, NewPatient, NonSensitivePatient} from '../types';
+import {NewPatientSchema, toNewEntry} from '../utils';
 import {z} from 'zod';
 
 const router = express.Router();
@@ -12,6 +12,11 @@ router.get('/', (_req, res) => {
 
 router.get('/:id', (req: Request, res: Response) => {
     res.send(patientsService.getPatientById(req.params.id));
+});
+
+router.post('/:id/entries', (req: Request, res: Response) => {
+    const newEntry: NewEntry = toNewEntry(req.body);
+    res.json(patientsService.addEntries(req.params.id, newEntry));
 });
 
 const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
