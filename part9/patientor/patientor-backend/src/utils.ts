@@ -29,7 +29,7 @@ const isString = (text: unknown): text is string => {
 
 const parseString = (value: unknown): string => {
     if (!isString(value))
-        throw new Error('Not a string!');
+        throw new Error('Not a string! Value: ' + value);
 
     return value;
 };
@@ -39,15 +39,18 @@ const isHealthCheckRating = (value: number): value is HealthCheckRating => {
 };
 
 const parseHealthCheckRating = (value: unknown): HealthCheckRating => {
-    if (!isNumber(value) || !isHealthCheckRating(value))
-        throw new Error('Type mismatch!');
+    if (!isNumber(value))
+        throw new Error('Type mismatch! Passed type: ' + typeof value);
+
+    if (!isHealthCheckRating(value))
+        throw new Error('Wrong value! ' + value);
 
     return value;
 };
 
 const parseSickLeave = (object: unknown): SickLeave => {
     if (!object || typeof object !== 'object')
-        throw new Error('Incorrect type');
+        throw new Error('Incorrect type! Passed type: ' + typeof object);
 
     if ('startDate' in object && 'endDate' in object) {
         return {
@@ -56,12 +59,12 @@ const parseSickLeave = (object: unknown): SickLeave => {
         };
     }
 
-    throw new Error('Missing fields!');
+    throw new Error('Missing fields! StartDate: ' + ('startDate' in object) + '; endDate: ' + ('endDate' in object));
 };
 
 const parseDischarge = (object: unknown): Discharge => {
     if (!object || typeof object !== 'object')
-        throw new Error('Incorrect type');
+        throw new Error('Incorrect type. Current type: ' + typeof object);
 
     if ('date' in object && 'criteria' in object) {
         return {
@@ -70,7 +73,7 @@ const parseDischarge = (object: unknown): Discharge => {
         };
     }
 
-    throw new Error('Missing fields!');
+    throw new Error('Missing fields! Date: ' + ('date' in object) + '; criteria: ' + ('criteria' in object));
 };
 
 const parseDiagnosisCodes = (object: unknown): Array<Diagnosis['code']> => {
@@ -91,7 +94,7 @@ const addHealthCheckInfo = (newEntry: NewBaseEntry, object: object): NewHealthCh
         };
     }
 
-    throw new Error('Incorrect or missing data');
+    throw new Error('Incorrect or missing data. HealthCheckRating: ' + ('healthCheckRating' in object));
 };
 
 const addOccupationalHealthcareInfo = (newEntry: NewBaseEntry, object: object): NewOccupationalHealthcareEntry => {
@@ -104,7 +107,7 @@ const addOccupationalHealthcareInfo = (newEntry: NewBaseEntry, object: object): 
         };
     }
 
-    throw new Error('Incorrect or missing data');
+    throw new Error('Incorrect or missing data. EmployerName: ' + ('date' in object && 'criteria' in object) + '; sickLeave: ' + ('sickLeave' in object));
 };
 
 const addHospitalInfo = (newEntry: NewBaseEntry, object: object): NewHospitalEntry => {
@@ -116,12 +119,12 @@ const addHospitalInfo = (newEntry: NewBaseEntry, object: object): NewHospitalEnt
         };
     }
 
-    throw new Error('Incorrect or missing data');
+    throw new Error('Incorrect or missing data. Discharge');
 };
 
 export const toNewEntry = (object: unknown): NewEntry => {
     if (!object || typeof object !== 'object') {
-        throw new Error('Incorrect or missing data');
+        throw new Error('Incorrect type. ' + typeof object);
     }
 
     if ('description' in object && 'date' in object && 'specialist' in object && 'diagnosisCodes' in object && 'type' in object) {
@@ -129,7 +132,7 @@ export const toNewEntry = (object: unknown): NewEntry => {
             description: parseString(object.description),
             date: parseString(object.date),
             specialist: parseString(object.specialist),
-            diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes)
+            diagnosisCodes: parseDiagnosisCodes(object)
         };
 
         switch (object.type) {
@@ -140,9 +143,9 @@ export const toNewEntry = (object: unknown): NewEntry => {
             case 'Hospital':
                 return addHospitalInfo(newEntry, object);
             default:
-                throw new Error('Incorrect entry type!');
+                throw new Error('Incorrect entry type! ' + object.type);
         }
     }
 
-    throw new Error('Incorrect or missing data');
+    throw new Error('Incorrect or missing data. Description: ' + ('description' in object) + '; date: ' + ('date' in object) + '; specialist: ' + ('specialist' in object) + '; diagnosisCodes: ' + ('diagnosisCodes' in object) + '; type: ' + ('type' in object));
 };
